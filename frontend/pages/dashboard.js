@@ -59,15 +59,15 @@ export default function DashboardPage() {
 
   const monthMap = {};
   revMonthly.forEach(r => {
-    if (!monthMap[r.month_key]) monthMap[r.month_key] = { month: r.label };
+    if (!monthMap[r.month_key]) monthMap[r.month_key] = { month: r.label, sortKey: r.month_key };
     if (r.entry_type === 'actual')   monthMap[r.month_key].revenue  = parseFloat(r.revenue);
     if (r.entry_type === 'forecast') monthMap[r.month_key].forecast = parseFloat(r.revenue);
   });
   costMonthly.forEach(c => {
-    if (!monthMap[c.month_key]) monthMap[c.month_key] = { month: c.label };
+    if (!monthMap[c.month_key]) monthMap[c.month_key] = { month: c.label, sortKey: c.month_key };
     if (c.entry_type === 'actual') monthMap[c.month_key].costs = parseFloat(c.costs);
   });
-  const chartData = Object.values(monthMap).sort((a, b) => a.month > b.month ? 1 : -1);
+  const chartData = Object.values(monthMap).sort((a, b) => a.sortKey > b.sortKey ? 1 : -1);
   chartData.forEach(d => { d.profit = (d.revenue || 0) - (d.costs || 0); });
 
   const totalAssets = assets.reduce((s, a) => s + parseFloat(a.total || 0), 0);
